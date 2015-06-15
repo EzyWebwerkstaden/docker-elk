@@ -8,10 +8,10 @@ RUN yum install -y \
     && yum clean all
 
 # Install elasticsearch
-RUN curl -O https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.tar.gz \
+RUN curl -O https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.tar.gz \
     && mkdir /opt/elasticsearch \
-    && tar -xzvf ./elasticsearch-1.4.4.tar.gz --strip 1 -C /opt/elasticsearch \
-    && rm ./elasticsearch-1.4.4.tar.gz
+    && tar -xzvf ./elasticsearch-1.6.0.tar.gz --strip 1 -C /opt/elasticsearch \
+    && rm ./elasticsearch-1.6.0.tar.gz
     
 # Define mountable directories.
 VOLUME ["/data"]

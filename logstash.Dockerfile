@@ -8,10 +8,10 @@ RUN yum install -y \
     && yum clean all
 
 # Install logstash
-RUN curl -O https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz \
+RUN curl -O http://download.elastic.co/logstash/logstash/logstash-1.4.3.tar.gz \
     && mkdir /opt/logstash \
-    && tar -xzvf ./logstash-1.4.2.tar.gz --strip 1 -C /opt/logstash \
-    && rm ./logstash-1.4.2.tar.gz
+    && tar -xzvf ./logstash-1.4.3.tar.gz --strip 1 -C /opt/logstash \
+    && rm ./logstash-1.4.3.tar.gz
 
 # Install contrib plugins
 RUN /opt/logstash/bin/plugin install contrib

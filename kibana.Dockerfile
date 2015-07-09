@@ -9,8 +9,8 @@ RUN yum install -y \
 # Install kibana
 RUN curl -O https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz \
     && mkdir /opt/kibana \
-    && tar -xzvf ./kibana-4.1.0-linux-x64.tar.gz --strip 1 -C /opt/kibana \
-    && rm ./kibana-4.1.0-linux-x64.tar.gz
+    && tar -xzvf ./kibana-4.1.1-linux-x64.tar.gz --strip 1 -C /opt/kibana \
+    && rm ./kibana-4.1.1-linux-x64.tar.gz
 
 COPY kibana.yml /etc/kibana/kibana.yml
 

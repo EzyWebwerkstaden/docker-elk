@@ -14,7 +14,8 @@ RUN curl -O https://download.elastic.co/logstash/logstash/logstash-1.5.2.tar.gz 
     && rm ./logstash-1.5.2.tar.gz
 
 # Install contrib plugins
-RUN /opt/logstash/bin/plugin install contrib
+RUN /opt/logstash/bin/plugin install logstash-input-redis
+RUN /opt/logstash/bin/plugin install logstash-output-elasticsearch
 
 COPY logstash.conf /etc/logstash/logstash.conf
 

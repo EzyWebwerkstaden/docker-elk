@@ -8,10 +8,10 @@ RUN yum install -y \
     && yum clean all
 
 # Install logstash
-RUN curl -O https://download.elastic.co/logstash/logstash/logstash-1.5.2.tar.gz \
+RUN curl -O https://download.elastic.co/logstash/logstash/logstash-2.1.0.tar.gz \
     && mkdir /opt/logstash \
-    && tar -xzvf ./logstash-1.5.2.tar.gz --strip 1 -C /opt/logstash \
-    && rm ./logstash-1.5.2.tar.gz
+    && tar -xzvf ./logstash-2.1.0.tar.gz --strip 1 -C /opt/logstash \
+    && rm ./logstash-2.1.0.tar.gz
 
 # Install contrib plugins
 RUN /opt/logstash/bin/plugin install logstash-input-redis

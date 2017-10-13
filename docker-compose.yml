@@ -1,0 +1,82 @@
+version: '2'
+
+services:
+
+  elasticsearch:
+    build: elasticsearch/
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx1g -Xms1g"
+    networks:
+      - elk
+    restart: unless-stopped
+
+  logstash:
+    build: logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx1g -Xmx1g"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  kibana:
+    build: kibana/
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config
+    ports:
+      - "5601:5601"
+    environment:
+      PLUGINS_INSTALLED: elastalert
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  slackdocker:
+    build: slack-docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+      - SLACK_CHANNEL=docker-notifications
+    networks:
+      - elk
+    restart: unless-stopped
+
+  filebeat:
+    image: bargenson/filebeat
+    volumes:
+     - /var/run/docker.sock:/tmp/docker.sock
+    environment:
+     - LOGSTASH_HOST=logstash
+     - LOGSTASH_PORT=5044
+     - SHIPPER_NAME=ezy-docker-elk
+    networks:
+      - elk
+    depends_on:
+      - logstash
+    restart: unless-stopped
+  
+  #Only for development purpose. 
+  #redis:  
+   #image: redis:alpine
+    #ports:
+      #- "6379:6379"
+    #networks:
+     # - elk
+    
+networks:
+  elk:
+    driver: bridge

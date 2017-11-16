@@ -12,6 +12,7 @@ const StateRegExp = process.env.STATE_REGEXPR || '^(die|start|restart|stop)$';
 const NameRegexp = process.env.NAME_REGEXPR || '.*';
 const SlackChannel = process.env.SLACK_CHANNEL || '#test';
 const SlackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
+const ServerName = process.env.SERVER_NAME || "not-set";
 const EventHysteresis = process.env.EVENT_HYSTERESIS || 5 * 1000;
 
 const EventInfo = {
@@ -141,6 +142,11 @@ class EventNotifier {
           color: eventInfo.color,
           text: '',
           fields: [
+            {
+              title: 'Server Name',
+              value: ServerName,
+              short: true
+            },
             {
               title: 'Timestamp',
               value: new Date().toISOString(),

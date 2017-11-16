@@ -14,7 +14,12 @@ services:
     networks:
       - elk
     restart: unless-stopped
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  
   logstash:
     build: logstash/
     volumes:
@@ -29,7 +34,12 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  
   kibana:
     build: kibana/
     volumes:
@@ -43,6 +53,12 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  
   curator:
     build: curator/
     environment:
@@ -90,15 +106,21 @@ services:
     depends_on:
       - logstash
     restart: unless-stopped
-  
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+
   #Only for development purpose. 
-  #redis:  
-   #image: redis:alpine
-    #ports:
-      #- "6379:6379"
-    #networks:
-     # - elk
-    
+  # redis:  
+  #   image: redis:alpine
+  #   ports:
+  #     - "6666:6666"
+  #   networks:
+  #    - elk
+
 networks:
   elk:
     driver: bridge

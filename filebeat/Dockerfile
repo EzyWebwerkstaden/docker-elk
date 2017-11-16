@@ -1,0 +1,1 @@
+FROM bargenson/filebeat

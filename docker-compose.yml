@@ -1,4 +1,4 @@
-version: '2'
+version: '3.0'
 
 services:
 
@@ -43,6 +43,22 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
+  curator:
+    build: curator/
+    environment:
+      - SCHEDULE=0 */12 * * * #https://crontab.guru/every-12-hours
+      - COMMAND=curator --config /etc/curator/config.yml  /etc/curator/action_file.yml
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
 
   slackdocker:
     build: slack-docker
@@ -55,6 +71,12 @@ services:
       - elk
     restart: unless-stopped
 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  
   filebeat:
     image: bargenson/filebeat
     volumes:

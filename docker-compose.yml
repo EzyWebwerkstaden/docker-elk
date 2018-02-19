@@ -94,25 +94,6 @@ services:
         max-size: "200k"
         max-file: "10"
   
-  filebeat:
-    build: filebeat/
-    volumes:
-     - /var/run/docker.sock:/tmp/docker.sock
-    environment:
-     - LOGSTASH_HOST=logstash
-     - LOGSTASH_PORT=5044
-     - SHIPPER_NAME=ezy-docker-elk
-    networks:
-      - elk
-    depends_on:
-      - logstash
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
-        
   portainer:
     build: portainer/
     volumes:

@@ -46,8 +46,8 @@ services:
       - ./kibana/config/:/usr/share/kibana/config
     ports:
       - "5601:5601"
-    environment:
-      PLUGINS_INSTALLED: elastalert
+    #environment:
+     #PLUGINS_INSTALLED: elastalert
     networks:
       - elk
     depends_on:
@@ -83,7 +83,7 @@ services:
     environment:
       - SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
       - SLACK_CHANNEL=docker-notifications
-      - SERVER_NAME=Change me
+      - SERVER_NAME=Ezy Test
     networks:
       - elk
     restart: unless-stopped
@@ -111,6 +111,24 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+        
+  portainer:
+    build: portainer/
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/portainer:/data
+    command: --no-auth #Remove if not behind IP or VPN restrictions
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+      
 
   #Only for development purpose. 
   # redis:  

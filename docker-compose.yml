@@ -6,6 +6,7 @@ services:
     build: elasticsearch/
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata1:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -118,6 +119,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/portainer:/data
     command: --no-auth #Remove if not behind IP or VPN restrictions
+    ports:
+      - "9000:9000"
     networks:
       - elk
     depends_on:
@@ -141,3 +144,9 @@ services:
 networks:
   elk:
     driver: bridge
+
+volumes:
+  esdata1:
+    driver: local
+    
+    
